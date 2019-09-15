@@ -7,22 +7,7 @@ import (
 	"unicode"
 )
 
-//Assert checks if err is nil or not, if not, it panics with that err.
-func Assert(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-//Exception error with stack trace
-type Exception []string
-
-func (e Exception) Error() string {
-	return strings.Join(e, "\n")
-}
-
-//Trace returns the current stack trace
-func Trace(msg string, args ...interface{}) (logs Exception) {
+func func3(msg string, args ...interface{}) (logs Exception) {
 	if len(args) > 0 {
 		msg = fmt.Sprintf(msg, args...)
 	}

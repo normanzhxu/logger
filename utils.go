@@ -4,7 +4,47 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/json"
+	"fmt"
+	"os"
+	"strings"
+	"unicode"
 )
+
+func ErrorFmt(err error) {
+	fmt.Fprintln(os.Stderr, Trace(err.Error()))
+}
+
+func LogFmt(msg string, args ...interface{}) {
+	msg = strings.TrimRightFunc(fmt.Sprintf(msg, args...), unicode.IsSpace)
+	fmt.Println(msg)
+}
+func Throw(msg string, args ...interface{}) {
+	panic(Trace(msg, args...))
+}
+
+func Catch(err *error, handler ...func()) {
+	if e := recover(); e != nil {
+		*err = e.(error)
+	}
+	for _, h := range handler {
+		h()
+	}
+}
+
+func NotNilErrorAssert(funcname string, err error) {
+	if IsNotNil(err) {
+		trace := fmt.Sprintf("%s_ERROR", funcname)
+		Error(trace, "%s", err.Error())
+		Assert(err)
+	}
+}
+
+func IsNotNil(err error) bool {
+	if err != nil {
+		return true
+	}
+	return false
+}
 
 func Jsonify(value interface{}, indent ...string) string {
 	var buf bytes.Buffer
