@@ -63,13 +63,18 @@ func DbgPro(prefix, msg string, args ...interface{}) {
 	mx.Lock()
 	defer mx.Unlock()
 	log := Trace("")
+	fmt.Println("log:", log)
 	for _, l := range log {
 		if l != "" {
 			caller = l
 			break
 		}
 	}
+	fmt.Println("call:", caller)
+
 	caller = rv.ReplaceAllString(caller, "")
+	fmt.Println("caller:", caller)
+	fmt.Println("strings.TrimSpace(caller):", strings.TrimSpace(caller))
 
 	Log(prefix+" "+strings.TrimSpace(caller)+" > ", msg, args...)
 }
